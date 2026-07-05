@@ -4,6 +4,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const connectDB = require("./config/db");
 const serviceRoutes = require("./routes/serviceRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 
 // API Routes
 app.use("/api/services", serviceRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 const PORT = process.env.PORT || 5000;
 
