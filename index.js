@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const connectDB = require("./config/db");
+const serviceRoutes = require("./routes/serviceRoutes");
 
 const app = express();
 
@@ -18,6 +19,9 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "Tarot Website Backend is running!" });
 });
+
+// API Routes
+app.use("/api/services", serviceRoutes);
 
 const PORT = process.env.PORT || 5000;
 
