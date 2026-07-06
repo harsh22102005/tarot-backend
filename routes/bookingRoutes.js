@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Booking = require("../models/Booking");
+const { protect, adminOnly } = require("../middleware/authMiddleware");
 
 // GET all bookings
 router.get("/", async (req, res) => {
@@ -36,8 +37,8 @@ router.post("/", async (req, res) => {
   }
 });
 
-// PUT update booking status (e.g., confirm, cancel)
-router.put("/:id", async (req, res) => {
+// PUT update booking status (e.g., confirm, cancel) - Admin only
+router.put("/:id", protect, adminOnly, async (req, res) => {
   try {
     const updatedBooking = await Booking.findByIdAndUpdate(
       req.params.id,
@@ -53,8 +54,8 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE cancel/remove a booking
-router.delete("/:id", async (req, res) => {
+// DELETE cancel/remove a booking - Admin only
+router.delete("/:id", protect, adminOnly, async (req, res) => {
   try {
     const deletedBooking = await Booking.findByIdAndDelete(req.params.id);
     if (!deletedBooking) {
