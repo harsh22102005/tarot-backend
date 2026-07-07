@@ -37,17 +37,19 @@ router.post("/verify", async (req, res) => {
       bookingId,
     } = req.body;
 
-    // Create expected signature to verify authenticity
     const generatedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(`${razorpay_order_id}|${razorpay_payment_id}`)
       .digest("hex");
 
+    console.log("Generated Signature:", generatedSignature);
+    console.log("Received Signature:", razorpay_signature);
+    console.log("Key Secret being used:", process.env.RAZORPAY_KEY_SECRET);
+
     if (generatedSignature !== razorpay_signature) {
       return res.status(400).json({ message: "Invalid payment signature" });
     }
 
-    // Update booking status to paid and confirmed
     await Booking.findByIdAndUpdate(bookingId, {
       paymentStatus: "paid",
       status: "confirmed",
